@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IT Interactive Portal - M. Rakha A.F.</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <canvas id="bgCanvas"></canvas>
+
+    <div class="theme-widget">
+        <span class="theme-title">THEME COLOR</span>
+        <div class="color-options">
+            <span class="color-dot active" data-color="#00f2fe" style="background: #00f2fe;"></span>
+            <span class="color-dot" data-color="#b5179e" style="background: #b5179e;"></span>
+            <span class="color-dot" data-color="#00ff66" style="background: #00ff66;"></span>
+            <span class="color-dot" data-color="#ff9f1c" style="background: #ff9f1c;"></span>
+        </div>
+    </div>
+
+    <div class="audio-widget">
+        <div class="audio-header">
+            <button id="playBtn" class="play-btn">▶</button>
+            <span class="audio-title">AUDIO ENGINE</span>
+        </div>
+        <div class="audio-sliders">
+            <div class="slider-item">
+                <label for="volumeSlider">VOL <span id="volVal">50%</span></label>
+                <input type="range" id="volumeSlider" min="0" max="1" step="0.01" value="0.5">
+            </div>
+            <div class="slider-item">
+                <label for="reverbSlider">REV <span id="revVal">0%</span></label>
+                <input type="range" id="reverbSlider" min="0" max="1" step="0.05" value="0">
+            </div>
+        </div>
+        <audio id="bgm" loop crossOrigin="anonymous">
+            <source src="assets/audio/bgm.mp3" type="audio/mpeg">
+        </audio>
+    </div>
+
+    <div id="gameStatus" class="status-overlay"></div>
+
+    <main id="app">
+
+        <section class="slide active" id="slide-1">
+            <div class="slide-content login-layout" id="loginContent">
+                <div class="login-brand">
+                    <img src="assets/img/logo.png" alt="Logo" class="hero-logo img-render">
+                    <h1 class="brand-title">IT CLASS PORTAL</h1>
+                    <p class="brand-sub">Sistem Autentikasi Keamanan & Verifikasi Presisi.</p>
+                </div>
+
+                <div class="login-form-box" id="loginBox">
+                    <div class="input-field">
+                        <label for="username">USERNAME</label>
+                        <input type="text" id="username" placeholder="Masukkan username..." autocomplete="off">
+                    </div>
+
+                    <div class="input-field">
+                        <label for="password">PASSWORD</label>
+                        <input type="password" id="password" placeholder="Masukkan password...">
+                    </div>
+
+                    <div id="loginError" class="error-banner">
+                        <span>⚠️ Username atau Password Salah!</span>
+                    </div>
+
+                    <button onclick="handleLoginSubmit()" class="btn-action sfx-btn">MASUK SISTEM →</button>
+                </div>
+            </div>
+
+            <div class="sniper-arena" id="sniperArena" style="display: none;">
+                <div class="game-hud">
+                    <span class="hud-badge">CYBER-AIM VERIFICATION</span>
+                    <h1 class="game-title">AIM TARGET LOCK</h1>
+                    <div class="game-stats-bar">
+                        <div class="hud-stat">SCORE: <span id="gameScore">0</span></div>
+                        <div class="hud-stat">COMBO: <span id="gameCombo">x0</span></div>
+                        <div class="hud-stat">TIME: <span id="gameTimer">15</span>s</div>
+                    </div>
+                    <p class="game-sub">Kumpulkan minimal <b>1000 Poin</b> untuk membuka slide berikutnya! 🎯</p>
+                </div>
+
+                <div id="screenFlash" class="screen-flash"></div>
+                
+                <div id="sniperTarget" class="target-3d-wrapper">
+                    <div class="target-3d-card">
+                        <div class="target-3d-front">🎯</div>
+                        <div class="target-3d-ring ring-1"></div>
+                        <div class="target-3d-ring ring-2"></div>
+                        <div class="target-3d-back"></div>
+                    </div>
+                </div>
+
+                <div id="scopeOverlay" class="scope-overlay">
+                    <div class="scope-crosshair-v"></div>
+                    <div class="scope-crosshair-h"></div>
+                    <div class="scope-lens"></div>
+                </div>
+
+                <div id="sniperRifle" class="sniper-hands">
+                    <span class="rifle-icon">🔫</span>
+                </div>
+            </div>
+        </section>
+
+        <section class="slide" id="slide-2">
+            <div class="slide-content hero-layout">
+                <div class="badge-status">● AKSES DITERIMA — SYSTEM ONLINE</div>
+                <h1 class="giant-heading">SELAMAT DATANG</h1>
+                <p class="hero-desc">Sistem portal berita & profil interaktif IT Class SMP Vidatra Bontang telah aktif.</p>
+                
+                <div class="nav-buttons">
+                    <button onclick="goToSlide(1)" class="btn-secondary sfx-btn">← Kembali ke Login</button>
+                    <button onclick="goToShootingSlide()" class="btn-secondary btn-glow sfx-btn">🎯 Mode Tembak 3D</button>
+                    <button onclick="goToSlide(3)" class="btn-action sfx-btn">Informasi Sekolah →</button>
+                </div>
+            </div>
+        </section>
+
+        <section class="slide" id="slide-3">
+            <div class="slide-content presentation-layout">
+                <header class="section-header">
+                    <span class="tag">INFORMASI EDUSITE</span>
+                    <h2>SMP Vidatra Bontang</h2>
+                </header>
+
+                <div class="grid-cards">
+                    <div class="info-card">
+                        <div class="card-icon">📍</div>
+                        <h3>Lokasi Strategis</h3>
+                        <p>Terletak di kawasan PT Badak NGL, Bontang, Kalimantan Timur dengan lingkungan asri dan aman.</p>
+                    </div>
+
+                    <div class="info-card">
+                        <div class="card-icon">🏫</div>
+                        <h3>Yayasan Vidatra</h3>
+                        <p>Dikelola oleh Yayasan Pendidikan Vidya Dahana Patra dengan standar pendidikan karakter tinggi.</p>
+                    </div>
+
+                    <div class="info-card">
+                        <div class="card-icon">💻</div>
+                        <h3>Fasilitas IT Modern</h3>
+                        <p>Dilengkapi program IT modern melatih pemrograman, jaringan, dan teknologi digital.</p>
+                    </div>
+
+                    <div class="info-card">
+                        <div class="card-icon">📖</div>
+                        <h3>Program Tahfidz</h3>
+                        <p>Memiliki program pembinaan Al-Qur'an (Tahfidz) untuk membangun moral spiritual siswa.</p>
+                    </div>
+
+                    <div class="info-card">
+                        <div class="card-icon">📱</div>
+                        <h3>Pembelajaran Digital</h3>
+                        <p>Proses KBM berbasis ekosistem perangkat digital interaktif dan efisien.</p>
+                    </div>
+
+                    <div class="info-card">
+                        <div class="card-icon">🎓</div>
+                        <h3>Jenjang Pendidikan</h3>
+                        <p>Ekosistem pendidikan terpadu mencakup SD, SMP, hingga jenjang SMA.</p>
+                    </div>
+                </div>
+
+                <footer class="slide-footer">
+                    <button onclick="goToSlide(2)" class="btn-secondary sfx-btn">← Sebelumnya</button>
+                    <button onclick="goToShootingSlide()" class="btn-secondary btn-glow sfx-btn">🎯 Mode Tembak 3D</button>
+                    <button onclick="goToSlide(4)" class="btn-action sfx-btn">Lihat Profil Penulis →</button>
+                </footer>
+            </div>
+        </section>
+
+        <section class="slide" id="slide-4">
+            <div class="slide-content profile-layout">
+                <header class="section-header">
+                    <span class="tag">BIODATA PENULIS</span>
+                    <h2>Profil Siswa IT</h2>
+                </header>
+
+                <div class="profile-dashboard">
+                    <div class="profile-main-card">
+                        <div class="avatar-box">
+                            <img src="assets/img/logo.png" alt="M. Rakha A.F. Profile" class="img-render">
+                        </div>
+                        <h3 class="profile-name">M. Rakha A.F.</h3>
+                        <span class="profile-role">● IT CLASS SPECIALIST</span>
+                    </div>
+
+                    <div class="stats-grid">
+                        <div class="stat-item">
+                            <span class="stat-label">UMUR</span>
+                            <span class="stat-value" data-target="14">0</span> <span class="unit">Tahun</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">TANGGAL LAHIR</span>
+                            <span class="stat-value">31 Mei 2012</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">PENGALAMAN IT</span>
+                            <span class="stat-value">Sejak Kelas 7</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">DOMISILI</span>
+                            <span class="stat-value">Komplek PT Badak</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="special-action-box">
+                    <button onclick="goToShootingSlide()" class="btn-huge-action sfx-btn">
+                        🎯 MASUK KE MODE TEMBAK 3D
+                    </button>
+                </div>
+
+                <footer class="slide-footer">
+                    <button onclick="goToSlide(3)" class="btn-secondary sfx-btn">← Sebelumnya</button>
+                    <button onclick="goToSlide(1)" class="btn-secondary btn-danger sfx-btn">🔒 Logout</button>
+                </footer>
+            </div>
+        </section>
+
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
